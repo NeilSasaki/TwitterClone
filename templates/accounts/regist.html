@@ -1,10 +1,10 @@
 {% extends 'base.html' %}
+{% load bootstrap4 %}
 {% block content %}
     <h1>Regist.html</h1>
     <form method="post">
         {% csrf_token %}
-        {{ form.as_p }}
-
+        {% bootstrap_form form %}
         <input type="submit" value="ユーザー登録">
     </form>
 {% endblock %}

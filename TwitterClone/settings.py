@@ -25,6 +25,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'accounts',
+    'bootstrap4',
 ]
 
 AUTH_USER_MODEL = 'accounts.Users'
