@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+{% load bootstrap4 %}
+{% block content %}
+    <div class="row">
+        <div class="col-sm-6 offset-sm-3">
+            <h1>Create.html</h1>
+            <form method="post">
+                {% csrf_token %}
+                {% bootstrap_form form %}
+                <input type="submit" value="投稿">
+            </form>
+        </div>
+    </div>
+{% endblock %}
