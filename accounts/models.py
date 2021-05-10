@@ -21,6 +21,8 @@ class UserManager(BaseUserManager):
 class Users(AbstractBaseUser, PermissionsMixin):
     username = models.CharField(max_length=100)
     email = models.EmailField(max_length=100, unique=True)
+    # ユーザー間の多対多の関係を記述
+    followers = models.ManyToManyField('self', blank='True', symmetrical='False')
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
 
