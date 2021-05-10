@@ -26,6 +26,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'accounts',
     'bootstrap4',
+    'microposts',
 ]
 
 AUTH_USER_MODEL = 'accounts.Users'
