@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+{% load bootstrap4 %}
+{% block content %}
+    <div class="content-wrapper">
+        <div class="container-fluid">
+            <!--ページタイトル-->
+            <div class="card mb-3">
+                <div class="card-header">
+                    <h3><b>Post一覧</b></h3>
+                </div>
+                <div class="card-body">
+                    <!-- テーブル表の定義 -->
+                    <div class="table table-responsive">
+                        <table id='post_list' width="100%" class="table table-striped table-bordered table-hover">
+                            　<!-- 表の列の定義-->
+                            <thead>
+                            <tr>
+                                <th class="text-center">ユーザー</th>
+                                <th class="text-center">内容</th>
+                            </tr>
+                            </thead>
+                            　<!-- ここまでが表の列の定義-->
+                            　<!-- 表のデータ部分の表示-->
+                            <tbody>
+                            {% for item in object_list %}
+                                <tr class="odd gradeX text-center">
+                                    <td class="text-center" width="100">{{ item.owner }}</td>
+                                    <td class="text-center" width="100">{{ item.content }}</td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                            　<!-- ここまでが表のデータ部分の表示-->
+                        </table>
+                        <!-- ここまでがテーブル表の定義 -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

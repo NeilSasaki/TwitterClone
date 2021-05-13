@@ -29,6 +29,10 @@ INSTALLED_APPS = [
     'microposts',
 ]
 
+BOOTSTRAP4 = {
+    'include_jquery': True,
+}
+
 AUTH_USER_MODEL = 'accounts.Users'
 
 MIDDLEWARE = [
@@ -55,6 +59,9 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+            ],
+            'builtins': [
+                'bootstrap4.templatetags.bootstrap4',
             ],
         },
     },
@@ -113,6 +120,9 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
 STATIC_URL = '/static/'
+STATICFILES_DIRS = (
+    os.path.join(BASE_DIR, "static"),
+)
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field

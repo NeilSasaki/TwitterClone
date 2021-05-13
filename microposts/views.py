@@ -1,10 +1,11 @@
 from django.shortcuts import render, redirect
 from django.views.generic.edit import CreateView
+from django.views.generic import ListView
 from .forms import PostCreateForm
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse_lazy
 from django.contrib import messages
-
+from .models import Post
 
 
 class PostCreateView(LoginRequiredMixin, CreateView):
@@ -23,3 +24,29 @@ class PostCreateView(LoginRequiredMixin, CreateView):
     def form_invalid(self, form):
         messages.warning(self.request, '投稿が失敗しました')
         return redirect('microposts:create')
+
+
+class PostListView(LoginRequiredMixin, ListView):
+    # テンプレートを指定
+    template_name = 'microposts/list.html'
+    # 利用するモデルを指定
+    model = Post
+
+    # Postsテーブルの全データを取得するメソッド定義
+    def queryset(self):
+        return Post.objects.all()
+
+
+class MyPostListView(LoginRequiredMixin, ListView):
+    # テンプレートを指定
+    template_name = 'microposts/myposts.html'
+    # 利用するモデルを指定
+    model = Post
+
+    # Postsテーブルの全データを取得するメソッド定義
+    def queryset(self):
+        return Post.objects.filter(owner_id = self.request.user)
+
+    # def get_object(self):
+    #     print(self.request.user)
+    #     return self.request.user

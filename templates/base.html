@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="ja">
 <head>
@@ -6,7 +7,6 @@
     <title>アプリケーション名</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
           integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-
     {% load bootstrap4 %}
     {# Load CSS and JavaScript #}
     {% bootstrap_css %}
@@ -24,7 +24,7 @@
                 <li class="nav-item active">
                     <a class="nav-link" href="#">XXXXXXXX <span class="sr-only">(current)</span></a>
                 </li>
-                <li class="nav-item"><a class="nav-link" href="{% url 'accounts:home' %}">Home</a>
+                <li class="nav-item"><a class="nav-link" href="{% url 'microposts:list' %}">list</a>
                 </li>{% if user.is_authenticated %}
                 <li class="nav-item">
                     <a class="nav-link" href="{% url 'accounts:user_logout' %}">ログアウト</a>
@@ -36,17 +36,17 @@
                     <a class="nav-link" href="{% url 'accounts:regist' %}">ユーザー登録</a>
                 </li>{% endif %}
                 <li class="nav-item">
-                    <a class="nav-link" href="{% url 'accounts:user' %}">ユーザー詳細</a>
+                    <a class="nav-link" href="{% url 'accounts:user' %}">{{ user.get_username }}</a>
                 </li>
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button"
                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        Dropdown link
+                        ユーザー詳細
                     </a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                        <a class="dropdown-item" href="#">Action</a>
-                        <a class="dropdown-item" href="#">Another action</a>
-                        <a class="dropdown-item" href="#">Something else here</a>
+                        <a class="dropdown-item" href="{% url 'microposts:myposts' %}">My posts</a>
+                        <a class="dropdown-item" href="#">Following</a>
+                        <a class="dropdown-item" href="#">Follower</a>
                     </div>
                 </li>
             </ul>
@@ -67,6 +67,12 @@
         integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
         crossorigin="anonymous"></script>
 
+<!-- linkタグでDataTableのcssファイルを読み込む -->
+<link rel="stylesheet" href="https://cdn.datatables.net/t/bs-3.3.6/jqc-1.12.0,dt-1.10.11/datatables.min.css"/>
+<!-- DataTablesのjavascrit読み込み-->
+<script src="https://cdn.datatables.net/t/bs-3.3.6/jqc-1.12.0,dt-1.10.11/datatables.min.js"></script>
+<!-- 自作のmain.jsの読み込み -->
+<script src="{% static 'js/main.js' %}"></script>
 {% block footer %}
 {% endblock footer %}
 </body>
