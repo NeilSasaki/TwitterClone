@@ -3,6 +3,14 @@
 {% block content %}
     <div class="content-wrapper">
         <div class="container-fluid">
+            {% if messages %}
+                {% for message in messages %}
+                    {#   message/tagsはSettings.pyで設定している#}
+                    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>
+                        {{ message }}
+                    </li>
+                {% endfor %}
+            {% endif %}
             <div class="row">
                 <!--ページタイトル-->
                 <aside class="col-sm-4">
@@ -13,6 +21,11 @@
                         <div class="card-body">
                             <img class="rounded img-fluid" src="#" alt="">
                             <h1>プロフィール画像</h1>
+{#                            <form method="post">#}
+{#                                {% csrf_token %}#}
+{#                                {% bootstrap_form form %}#}
+{#                                <input type="submit" value="投稿">#}
+{#                            </form>#}
                         </div>
                         <button id="add-user" type="submit" class="btn btn-default btn-success btn-block">
                             お気に入り登録する

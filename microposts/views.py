@@ -1,11 +1,12 @@
 from django.shortcuts import render, redirect
 from django.views.generic.edit import CreateView
-from django.views.generic import ListView
+from django.views.generic import ListView, DeleteView
 from .forms import PostCreateForm
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse_lazy
 from django.contrib import messages
 from .models import Post
+from accounts.models import Users, Relationship
 
 
 class PostCreateView(LoginRequiredMixin, CreateView):
@@ -43,10 +44,46 @@ class MyPostListView(LoginRequiredMixin, ListView):
     # 利用するモデルを指定
     model = Post
 
-    # Postsテーブルの全データを取得するメソッド定義
-    def queryset(self):
-        return Post.objects.filter(owner_id = self.request.user)
+    success_url = reverse_lazy('microposts:myposts')
+
+    # Postsテーブルのowner_idが自分自身の全データを取得するメソッド定義
+    def get_queryset(self):
+        return Post.objects.filter(owner_id=self.request.user)
 
     # def get_object(self):
     #     print(self.request.user)
     #     return self.request.user
+
+
+# class FollowersView(LoginRequiredMixin, ListView):
+#     # テンプレートを指定
+#     template_name = 'microposts/followers.html'
+#     # 利用するモデルを指定
+#     model = Users
+#
+#     # Postsテーブルの全データを取得するメソッド定義
+#     def queryset(self):
+#         return Users.objects.filter(touser_id = self.request.user)
+
+class FollowersView(LoginRequiredMixin, ListView):
+    # テンプレートを指定
+    template_name = 'microposts/followers.html'
+    # 利用するモデルを指定
+    model = Relationship
+
+    # Postsテーブルの全データを取得するメソッド定義
+    def queryset(self):
+        return Relationship.objects.filter(user_id=(self.request.user))
+
+
+class PostDeleteView(LoginRequiredMixin, DeleteView):
+    model = Post
+    template_name = 'microposts/delete.html'
+    # deleteviewでは、SuccessMessageMixinが使われないので設定する必要あり
+    success_url = reverse_lazy('microposts:myposts')
+    success_message = "投稿は削除されました。"
+
+    # 削除された際にメッセージが表示されるようにする。
+    def delete(self, request, *args, **kwargs):
+        messages.success(self.request, self.success_message)
+        return super(PostDeleteView, self).delete(request, *args, **kwargs)

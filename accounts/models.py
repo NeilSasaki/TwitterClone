@@ -45,3 +45,21 @@ class Users(AbstractBaseUser, PermissionsMixin):
 
     def get_absolute_url(self):
         return reverse_lazy('accounts:home')
+
+
+class Relationship(models.Model):
+    # ここは、user_idではなくuserとすべきだった。。。
+    #自分をフォローしてくれている人
+    user_id = models.ForeignKey(Users, related_name='follower', on_delete=models.CASCADE)
+    #自分がフォローしている人
+    follow_user_id = models.ForeignKey(Users, related_name='following', on_delete=models.CASCADE)
+
+    # 重複してフォロー関係を作成しなように制約を設定する
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(fields=['user_id', 'follow_user_id'],
+                                    name='unique-relationship')
+        ]
+
+    def __str__(self):
+        return "{} : {}".format(self.user_id.username, self.follow_user_id.username)

@@ -1,5 +1,7 @@
 from pathlib import Path
 import os
+from django.contrib.messages import constants as messages
+from django.contrib.messages import constants as message_constants
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -135,3 +137,10 @@ LOGIN_REDIRECT_URL = '/accounts/home'
 LOGOUT_REDIRECT_URL = '/accounts/user_login'
 # Sessionが保持される時間（Sec)を記載する
 SESSION_COOKIE_AGE = 3600
+
+MESSAGE_TAGS = {
+    messages.ERROR: 'alert alert-danger',
+    messages.WARNING: 'alert alert-warning',
+    messages.SUCCESS: 'alert alert-success',
+    messages.INFO: 'alert alert-info'
+}

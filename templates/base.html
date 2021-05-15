@@ -36,12 +36,12 @@
                     <a class="nav-link" href="{% url 'accounts:regist' %}">ユーザー登録</a>
                 </li>{% endif %}
                 <li class="nav-item">
-                    <a class="nav-link" href="{% url 'accounts:user' %}">{{ user.get_username }}</a>
+                    <a class="nav-link" href="{% url 'microposts:create' %}">新規投稿</a>
                 </li>
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button"
                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        ユーザー詳細
+                        {{ user.get_username }}詳細
                     </a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                         <a class="dropdown-item" href="{% url 'microposts:myposts' %}">My posts</a>

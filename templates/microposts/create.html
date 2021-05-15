@@ -3,7 +3,16 @@
 {% block content %}
     <div class="row">
         <div class="col-sm-6 offset-sm-3">
-            <h1>Create.html</h1>
+            {#  views.pyからmessagesが渡された場合にのみメッセージを表示させる。#}
+            {% if messages %}
+                {% for message in messages %}
+                    {#   message/tagsはSettings.pyで設定している#}
+                    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>
+                        {{ message }}
+                    </li>
+                {% endfor %}
+            {% endif %}
+            <h1>新規投稿</h1>
             <form method="post">
                 {% csrf_token %}
                 {% bootstrap_form form %}
