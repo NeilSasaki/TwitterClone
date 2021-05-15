@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
-from django.views.generic.edit import CreateView
+from django.views.generic.edit import CreateView, UpdateView
 from django.views.generic import ListView, DeleteView
-from .forms import PostCreateForm
+from .forms import PostCreateForm, PostUpdateForm
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse_lazy
 from django.contrib import messages
@@ -74,6 +74,23 @@ class FollowersView(LoginRequiredMixin, ListView):
     # Postsテーブルの全データを取得するメソッド定義
     def queryset(self):
         return Relationship.objects.filter(user_id=(self.request.user))
+
+
+class PostUpdateView(LoginRequiredMixin, UpdateView):
+    model = Post
+    form_class = PostUpdateForm
+    template_name = 'microposts/update.html'
+
+    def form_valid(self, form):
+        messages.success(self.request, '更新が完了しました')
+        return super(PostUpdateView, self).form_valid(form)
+
+    def form_invalid(self, form):
+        messages.warning(self.request, '更新が失敗しました')
+        return redirect('microposts:create')
+
+    def get_success_url(self):
+        return reverse_lazy('microposts:update', kwargs={'pk': self.object.id})
 
 
 class PostDeleteView(LoginRequiredMixin, DeleteView):
