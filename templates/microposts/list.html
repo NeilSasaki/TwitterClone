@@ -17,6 +17,7 @@
                             <tr>
                                 <th class="text-center">ユーザー</th>
                                 <th class="text-center">内容</th>
+                                <th class="text-center">投稿日</th>
                             </tr>
                             </thead>
                             　<!-- ここまでが表の列の定義-->
@@ -26,6 +27,7 @@
                                 <tr class="odd gradeX text-center">
                                     <td class="text-center" width="100">{{ item.owner }}</td>
                                     <td class="text-center" width="100">{{ item.content }}</td>
+                                <td class="text-center" width="100">{{ item.created_at }}</td>
                                 </tr>
                             {% endfor %}
                             </tbody>
