@@ -9,3 +9,12 @@ class Post(models.Model):
 
     class Meta:
         db_table = 'posts'
+
+
+# いいね 機能実装
+class Like(models.Model):
+    user = models.ForeignKey('accounts.Users', on_delete=models.CASCADE)
+    post = models.ForeignKey('Post', on_delete=models.CASCADE)
+
+    class Meta:
+        unique_together = ('user', 'post')

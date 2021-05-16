@@ -27,3 +27,4 @@ class PostUpdateForm(forms.ModelForm):
                 attrs={'rows': 10, 'cols': 30}
             ),
         }
+

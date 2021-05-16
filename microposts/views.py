@@ -1,12 +1,13 @@
 from django.shortcuts import render, redirect
 from django.views.generic.edit import CreateView, UpdateView
-from django.views.generic import ListView, DeleteView
+from django.views.generic import ListView, DeleteView, View
 from .forms import PostCreateForm, PostUpdateForm
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse_lazy
 from django.contrib import messages
-from .models import Post
+from .models import Post, Like
 from accounts.models import Users, Relationship
+from django.http.response import JsonResponse
 
 
 class PostCreateView(LoginRequiredMixin, CreateView):
@@ -34,8 +35,19 @@ class PostListView(LoginRequiredMixin, ListView):
     model = Post
 
     # Postsテーブルの全データを取得するメソッド定義
+    # テンプレートでは、object_listとしてreturnの値が渡される
     def queryset(self):
         return Post.objects.all()
+    # get_context_dataは複数のデータをテンプレートにcontextとして
+    # 送りたいときに使う。１つだけでよければ、createviewではqueryset
+    # でobject_listとして渡すことができる。
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        user = self.request.user
+        context['favorite_list'] = user.favoritePost.all()
+        # Postsテーブルの全データを取得しpost_listへ格納
+        context['posts_list'] = Post.objects.all()
+        return context
 
 
 class MyPostListView(LoginRequiredMixin, ListView):
@@ -104,3 +116,17 @@ class PostDeleteView(LoginRequiredMixin, DeleteView):
     def delete(self, request, *args, **kwargs):
         messages.success(self.request, self.success_message)
         return super(PostDeleteView, self).delete(request, *args, **kwargs)
+
+# class LikeView(LoginRequiredMixin, CreateView):
+#     model = Like
+#     success_url = reverse_lazy('microposts:list')
+#     success_message = "お気に入りに追加しました"
+#
+#     def get(self):
+#
+#
+#     # def post(self, request):
+#     #     post_id = request.POST.get('id')
+#     #     post = Post.objects.get(id=post_id)
+#     #     like = Like(Users=self.request.user, post=post)
+#     #     like.save()

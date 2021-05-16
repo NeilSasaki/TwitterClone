@@ -46,12 +46,20 @@ class Users(AbstractBaseUser, PermissionsMixin):
     def get_absolute_url(self):
         return reverse_lazy('accounts:home')
 
+    # 　お気に入り機能の追加. Blank Trueを忘れずに。
+    # DjangoはデフォルトでManyToManyはUniqueになる。
+    # ManyToManyの場合は、on_deleteは不要
+    favoritePost = models.ManyToManyField(
+        'microposts.Post', blank=True,
+        verbose_name='お気に入りの投稿'
+    )
+
 
 class Relationship(models.Model):
     # ここは、user_idではなくuserとすべきだった。。。
-    #自分をフォローしてくれている人
+    # 自分をフォローしてくれている人
     user_id = models.ForeignKey(Users, related_name='follower', on_delete=models.CASCADE)
-    #自分がフォローしている人
+    # 自分がフォローしている人
     follow_user_id = models.ForeignKey(Users, related_name='following', on_delete=models.CASCADE)
 
     # 重複してフォロー関係を作成しなように制約を設定する
